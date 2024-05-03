@@ -64,23 +64,46 @@ const images = [
   },
 ];
 
+const galleryContainer = document.querySelector(".gallery");
 
+const galleryItems = images.map((image) => {
+  const galleryItem = document.createElement("li");
+  galleryItem.classList.add("gallery-item");
 
+  const link = document.createElement("a");
+  link.classList.add("gallery-link");
+  link.href = image.original;
 
+  const img = document.createElement("img");
+  img.classList.add("gallery-image");
+  img.setAttribute("data-source", image.original);
+  img.alt = image.description;
+  img.src = image.preview;
 
-// отримуємо всі посидання з класом "gallery-link"
-const galleryLinks = document.querySelectorAll('.gallery-link');
-
-// проходимся по кожному посиланню і встановлюємо обробник подій на клік
-galleryLinks.forEach(function (link) {
-  // відміняємо стандартну поведінку посилання при кліку
-  link.addEventListener('click', function (event) {
-    event.preventDefault();// Відміняємо стандартну дію посилання
-    
-    // Отримуємо посилання на зображення з атрибута data-source
-    const imageSource = this.querySelector('.gallery-image').dataset.source;
-
-    // Використовуємо imageSource для подільшої обробки
-    console.log(imageSource);
-  });
+  link.appendChild(img);
+  galleryItem.appendChild(link);
+  return galleryItem;
 });
+
+galleryItems.forEach((item) => {
+  galleryContainer.appendChild(item);
+});
+
+// Додано обробник події для галереї
+galleryContainer.addEventListener("click", (event) => {
+  event.preventDefault();
+  const target = event.target;
+
+  if (target.tagName === "IMG") {
+    // Отримати джерело великого зображення з атрибута data-source
+    const imageSource = target.dataset.source;
+
+    // Створити екземпляр basicLightbox і показати велике зображення
+    const imageInstance = basicLightbox.create(
+      `<img src="${imageSource}" alt="${target.alt}">`
+    );
+    imageInstance.show();
+  }
+  
+});
+
