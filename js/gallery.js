@@ -65,6 +65,9 @@ const images = [
 ];
 
 
+
+
+
 // отримуємо всі посидання з класом "gallery-link"
 const galleryLinks = document.querySelectorAll('.gallery-link');
 
